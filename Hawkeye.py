@@ -1,9 +1,12 @@
+import discord
 from discord.ext import commands
-
 from pathlib import Path
 
+intents = discord.Intents.default()
+intents.members = True
+
 BOT_PREFIX = ('sudo ')
-bot = commands.Bot(command_prefix=BOT_PREFIX)
+bot = commands.Bot(command_prefix=BOT_PREFIX, intents = intents)
 
 
 @bot.event
@@ -19,8 +22,8 @@ if __name__ == '__main__':
 		TOKEN = TokenObj.read()
 
 	cogs = [
-		'cogs.admin.template',
-		'cogs.random.template'
+		'cogs.admin.mod',
+		#'cogs.random.template'
 	]
 
 	for cog in cogs:
