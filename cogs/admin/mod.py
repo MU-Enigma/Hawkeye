@@ -13,7 +13,7 @@ class Mod(commands.Cog):
 	@has_permissions(administrator=True)
 	async def kick(self,ctx, *, reason = None):
 		if reason == None:
-			embed = discord.Embed(description=f"○ A parameter is missing.\n○ Try mentioning the user -> `sudo kick @User`.\n○Type `sudo help` to know about each command.",colour=discord.Colour.light_gray())
+			embed = discord.Embed(description=f"○ A parameter is missing.\n○ Try mentioning the user -> `sudo kick @User`.\n○ Type `sudo help` to know about each command.",colour=discord.Colour.light_gray())
 			await ctx.send(embed = embed)
 			return
 		async def kick_user(self,ctx,member:discord.Member, reason):
@@ -42,34 +42,33 @@ class Mod(commands.Cog):
 					await member.kick(reason = reason)
 					embed=discord.Embed(color=discord.Colour.red(), title=f"{member} was kicked", description=f"Reason: {reason}")
 					await ctx.send(embed = embed)
-		# mutliple user input handling
-		try:
-			extra_Users = reason.split(">")
-			extra_Users = [x.replace("<@!", "") for x in extra_Users]
-			if ">" not in extra_Users[len(extra_Users)-1]:
-				reason = str(extra_Users[len(extra_Users)-1])
-				extra_Users.pop(len(extra_Users)-1)
-			else:
-				reason = "-"
-			extra_Users = [x.replace(">","") for x in extra_Users]
-			if extra_Users[0] == "":
-				extra_Users.pop(0)
-			for user_ID in extra_Users:
-				try:
-					member = await ctx.guild.fetch_member(int(str(user_ID)))
-					await kick_user(self,ctx,member,reason)
-				except Exception:	
-					user = await self.bot.fetch_user(user_ID)
-					embed = discord.Embed(description=f"{user} is not in the server.",colour=discord.Colour.light_gray())
-					await ctx.send(embed = embed)
-		except Exception as e:
-			print(e)
+		
+		# iterating through the USER_ID list
+		extra_Users = reason.split(">")
+		extra_Users = [x.replace("<@!", "") for x in extra_Users]
+		if ">" not in extra_Users[len(extra_Users)-1]:
+			reason = str(extra_Users[len(extra_Users)-1])
+			extra_Users.pop(len(extra_Users)-1)
+		else:
+			reason = "-"
+		extra_Users = [x.replace(">","") for x in extra_Users]
+		if extra_Users[0] == "":
+			extra_Users.pop(0)
+		for user_ID in extra_Users:
+			try:
+				member = await ctx.guild.fetch_member(int(str(user_ID)))
+				await kick_user(self,ctx,member,reason)
+			except Exception:	
+				user = await self.bot.fetch_user(user_ID)
+				embed = discord.Embed(description=f"{user} is not in the server.",colour=discord.Colour.light_gray())
+				await ctx.send(embed = embed)
+		
 
 	@commands.command(help = "Bans the specified user    | sudo ban @User")
 	@has_permissions(administrator=True)
 	async def ban(self,ctx, *, reason =None):
 		if reason == None:
-			embed = discord.Embed(description=f"○ A parameter is missing.\n○ Try mentioning the user -> `sudo ban @user`.\n○Type `sudo help` to know about each command.",colour=discord.Colour.light_gray())
+			embed = discord.Embed(description=f"○ A parameter is missing.\n○ Try mentioning the user -> `sudo ban @user`.\n○ Type `sudo help` to know about each command.",colour=discord.Colour.light_gray())
 			await ctx.send(embed = embed)
 			return
 		async def ban_user(self, ctx, member: discord.Member, reason):
@@ -103,7 +102,7 @@ class Mod(commands.Cog):
 						embed=discord.Embed(color=discord.Colour.red(), title=f"{member} was banned", description=f"Reason: {reason}")
 						await ctx.send(embed = embed)
 						await member.ban(reason = reason)
-		# mutliple user input handling
+		# iterating through the USER_ID list
 		
 		extra_Users = reason.split(">")
 		extra_Users = [x.replace("<@!", "") for x in extra_Users]
@@ -128,7 +127,7 @@ class Mod(commands.Cog):
 	@has_permissions(administrator = True)
 	async def unban(self,ctx, *, arg = None):
 		if arg == None:
-			embed = discord.Embed(description=f"○ A parameter is missing.\n○ Try mentioning the user -> `sudo unban Hawkeye#1180`.\n○Type `sudo help` to know about each command.",colour=discord.Colour.light_gray())
+			embed = discord.Embed(description=f"○ A parameter is missing.\n○ Try mentioning the user -> `sudo unban Hawkeye#1180`.\n○ Type `sudo help` to know about each command.",colour=discord.Colour.light_gray())
 			await ctx.send(embed = embed)
 			return
 		users = arg.split()
@@ -152,7 +151,7 @@ class Mod(commands.Cog):
 	@commands.has_permissions(administrator = True)
 	async def mute(self,ctx, *, reason=None):
 		if reason == None:
-			embed = discord.Embed(description=f"○ A parameter is missing.\n○ Try mentioning the user -> `sudo mute @User`.\n○Type `sudo help` to know about each command.",colour=discord.Colour.light_gray())
+			embed = discord.Embed(description=f"○ A parameter is missing.\n○ Try mentioning the user -> `sudo mute @User`.\n○ Type `sudo help` to know about each command.",colour=discord.Colour.light_gray())
 			await ctx.send(embed = embed)
 			return
 
@@ -186,7 +185,7 @@ class Mod(commands.Cog):
 					message = f"You have been banned from {ctx.guild.name} {reason}."
 					await member.send(message)
 
-		# mutliple user input case handling
+		# iterating through the USER_ID list 
 		
 		extra_Users = reason.split(">")
 		extra_Users = [x.replace("<@!", "") for x in extra_Users]
@@ -212,7 +211,7 @@ class Mod(commands.Cog):
 	@commands.has_permissions(manage_messages=True)
 	async def unmute(self,ctx,*, reason = None):
 		if reason == None:
-			embed = discord.Embed(description=f"○ A parameter is missing.\n○ Try mentioning the user -> `sudo unmute @User`.\n○Type `sudo help` to know about each command.",colour=discord.Colour.light_gray())
+			embed = discord.Embed(description=f"○ A parameter is missing.\n○ Try mentioning the user -> `sudo unmute @User`.\n○ Type `sudo help` to know about each command.",colour=discord.Colour.light_gray())
 			await ctx.send(embed = embed)
 			return
 		async def unmute_user(self,ctx,member: discord.Member, reason):
@@ -227,7 +226,7 @@ class Mod(commands.Cog):
 				embed = discord.Embed(description=f"{member} had not been muted in the first place.",colour=discord.Colour.light_gray())
 				await ctx.send(embed=embed)
 
-		# multiple user input case handling
+		# iterating through the USER_ID list
 
 		extra_Users = reason.split(">")
 		extra_Users = [x.replace("<@!", "") for x in extra_Users]

@@ -32,8 +32,6 @@ if __name__ == '__main__':
 
 	for cog in cogs:
 		print ("Loading Cog:\t", cog, "...")
-
 		bot.load_extension(cog)
-
 
 	bot.run(TOKEN)
