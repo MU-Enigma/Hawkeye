@@ -14,7 +14,12 @@ async def on_ready():
 	print ("\nLogged in as:\t" + str(bot.user))
 	print ("-----------------")
 
-
+@bot.event
+async def on_command_error(ctx, error):
+	if isinstance(error, commands.CommandNotFound):
+		embed = discord.Embed(description=f"○ Invalid command\n○ Type `sudo help` to know about each command.",colour=discord.Colour.light_gray())
+		await ctx.send(embed = embed)
+		return
 if __name__ == '__main__':
 	res = Path("res")
 
@@ -23,7 +28,6 @@ if __name__ == '__main__':
 
 	cogs = [
 		'cogs.admin.mod',
-		#'cogs.random.template'
 	]
 
 	for cog in cogs:
