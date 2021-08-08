@@ -28,6 +28,7 @@ if __name__ == '__main__':
 
 	cogs = [
 		'cogs.admin.mod',
+		'cogs.admin.random'
 	]
 
 	for cog in cogs:
