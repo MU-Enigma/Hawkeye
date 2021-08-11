@@ -17,7 +17,7 @@ async def on_ready():
 @bot.event
 async def on_command_error(ctx, error):
 	if isinstance(error, commands.CommandNotFound):
-		embed = discord.Embed(description=f"○ Invalid command\n○ Type `sudo help` to know about each command.",colour=discord.Colour.light_gray())
+		embed = discord.Embed(description=f"○ Invalid command\n○ Type `sudo help` to know about each command.",colour=discord.Colour.red())
 		await ctx.send(embed = embed)
 		return
 if __name__ == '__main__':
@@ -28,6 +28,7 @@ if __name__ == '__main__':
 
 	cogs = [
 		'cogs.admin.mod',
+		'cogs.admin.random'
 	]
 
 	for cog in cogs:
