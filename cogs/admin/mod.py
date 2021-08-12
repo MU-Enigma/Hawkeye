@@ -58,7 +58,8 @@ class Mod(commands.Cog):
 			try:
 				member = await ctx.guild.fetch_member(int(str(user_ID)))
 				await kick_user(self,ctx,member,reason)
-			except Exception:	
+			except Exception as e:
+				print(e)	
 				user = await self.bot.fetch_user(user_ID)
 				embed = discord.Embed(description=f"{user} is not in the server.",colour=discord.Colour.light_gray())
 				await ctx.send(embed = embed)
