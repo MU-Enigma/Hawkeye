@@ -13,7 +13,7 @@ class Mod(commands.Cog):
 	@has_permissions(administrator=True)
 	async def kick(self,ctx, *, reason = None):
 		if reason == None:
-			embed = discord.Embed(description=f"○ A parameter is missing.\n○ Try mentioning the user -> `sudo kick @User`.\n○ Type `sudo help` to know about each command.",colour=discord.Colour.light_gray())
+			embed = discord.Embed(description=f"○ A parameter is missing.\n○ Try mentioning the user -> `sudo kick @User`.\n○ Type `sudo help` to know about each command.",colour=discord.Colour.red())
 			await ctx.send(embed = embed)
 			return
 		async def kick_user(self,ctx,member:discord.Member, reason):
@@ -31,7 +31,6 @@ class Mod(commands.Cog):
 					else:
 						embed=discord.Embed(color=discord.Colour.red(), title="Administrator", description=f"{member} is an admin bot and is not allowed to be kicked.")
 						await ctx.send(embed = embed)
-
 				else:
 					if reason == None:
 						reason = "-"
@@ -59,9 +58,8 @@ class Mod(commands.Cog):
 				member = await ctx.guild.fetch_member(int(str(user_ID)))
 				await kick_user(self,ctx,member,reason)
 			except Exception as e:
-				print(e)	
 				user = await self.bot.fetch_user(user_ID)
-				embed = discord.Embed(description=f"{user} is not in the server.",colour=discord.Colour.light_gray())
+				embed = discord.Embed(description=f"{user} is not in the server.",colour=discord.Colour.red())
 				await ctx.send(embed = embed)
 		
 
@@ -69,7 +67,7 @@ class Mod(commands.Cog):
 	@has_permissions(administrator=True)
 	async def ban(self,ctx, *, reason =None):
 		if reason == None:
-			embed = discord.Embed(description=f"○ A parameter is missing.\n○ Try mentioning the user -> `sudo ban @user`.\n○ Type `sudo help` to know about each command.",colour=discord.Colour.light_gray())
+			embed = discord.Embed(description=f"○ A parameter is missing.\n○ Try mentioning the user -> `sudo ban @user`.\n○ Type `sudo help` to know about each command.",colour=discord.Colour.red())
 			await ctx.send(embed = embed)
 			return
 		async def ban_user(self, ctx, member: discord.Member, reason):
@@ -121,14 +119,14 @@ class Mod(commands.Cog):
 				await ban_user(self,ctx,member,reason)
 			except Exception:
 				user = await self.bot.fetch_user(user_ID)
-				embed = discord.Embed(description=f"{user} is not in the server.",colour=discord.Colour.light_gray())
+				embed = discord.Embed(description=f"{user} is not in the server.",colour=discord.Colour.red())
 				await ctx.send(embed = embed)
 
 	@commands.command(help = f"Unbans the specified user  | sudo unban Hawkeye#1180")
 	@has_permissions(administrator = True)
 	async def unban(self,ctx, *, arg = None):
 		if arg == None:
-			embed = discord.Embed(description=f"○ A parameter is missing.\n○ Try mentioning the user -> `sudo unban Hawkeye#1180`.\n○ Type `sudo help` to know about each command.",colour=discord.Colour.light_gray())
+			embed = discord.Embed(description=f"○ A parameter is missing.\n○ Try mentioning the user -> `sudo unban Hawkeye#1180`.\n○ Type `sudo help` to know about each command.",colour=discord.Colour.red())
 			await ctx.send(embed = embed)
 			return
 		users = arg.split()
@@ -141,18 +139,18 @@ class Mod(commands.Cog):
 				if (user.name, user.discriminator) == (member_name, member_discriminator):
 					was_banned = True
 					await ctx.guild.unban(user)
-					embed = discord.Embed(description=f" Unbanned-{user.mention}",colour=discord.Colour.light_gray())
+					embed = discord.Embed(description=f" Unbanned-{user.mention}",colour=discord.Colour.red())
 					await ctx.channel.send(embed = embed)
 			# if the user had not been banned
 			if not was_banned:
-				embed = discord.Embed(description=f"{member} had not been banned in the first place.",colour=discord.Colour.light_gray())
+				embed = discord.Embed(description=f"{member} had not been banned in the first place.",colour=discord.Colour.red())
 				await ctx.send(embed=embed)
 	
 	@commands.command(pass_context = True,help="Mutes the specified user   | sudo mute @user")
 	@commands.has_permissions(administrator = True)
 	async def mute(self,ctx, *, reason=None):
 		if reason == None:
-			embed = discord.Embed(description=f"○ A parameter is missing.\n○ Try mentioning the user -> `sudo mute @User`.\n○ Type `sudo help` to know about each command.",colour=discord.Colour.light_gray())
+			embed = discord.Embed(description=f"○ A parameter is missing.\n○ Try mentioning the user -> `sudo mute @User`.\n○ Type `sudo help` to know about each command.",colour=discord.Colour.red())
 			await ctx.send(embed = embed)
 			return
 
@@ -205,14 +203,14 @@ class Mod(commands.Cog):
 				await mute_user(self,ctx,member,reason)
 			except Exception:
 				user = await self.bot.fetch_user(user_ID)
-				embed = discord.Embed(description=f"{user} is not in the server.",colour=discord.Colour.light_gray())
+				embed = discord.Embed(description=f"{user} is not in the server.",colour=discord.Colour.red())
 				await ctx.send(embed = embed)
 
 	@commands.command(help="Unmutes the specified user | sudo unmute @user")
 	@commands.has_permissions(manage_messages=True)
 	async def unmute(self,ctx,*, reason = None):
 		if reason == None:
-			embed = discord.Embed(description=f"○ A parameter is missing.\n○ Try mentioning the user -> `sudo unmute @User`.\n○ Type `sudo help` to know about each command.",colour=discord.Colour.light_gray())
+			embed = discord.Embed(description=f"○ A parameter is missing.\n○ Try mentioning the user -> `sudo unmute @User`.\n○ Type `sudo help` to know about each command.",colour=discord.Colour.red())
 			await ctx.send(embed = embed)
 			return
 		async def unmute_user(self,ctx,member: discord.Member, reason):
@@ -221,10 +219,10 @@ class Mod(commands.Cog):
 				await member.remove_roles(mutedRole)
 				if not member.bot:
 					await member.send(f" You have unmuted from: - {ctx.guild.name}.")
-				embed = discord.Embed(description=f"Unmuted-{member.mention}",colour=discord.Colour.light_gray())
+				embed = discord.Embed(description=f"Unmuted-{member.mention}",colour=discord.Colour.red())
 				await ctx.send(embed=embed)
 			else:
-				embed = discord.Embed(description=f"{member} had not been muted in the first place.",colour=discord.Colour.light_gray())
+				embed = discord.Embed(description=f"{member} had not been muted in the first place.",colour=discord.Colour.red())
 				await ctx.send(embed=embed)
 
 		# iterating through the USER_ID list
@@ -245,8 +243,9 @@ class Mod(commands.Cog):
 				await unmute_user(self,ctx,member,reason)
 			except Exception:
 				user = await self.bot.fetch_user(user_ID)
-				embed = discord.Embed(description=f"{user} is not in the server.",colour=discord.Colour.light_gray())
+				embed = discord.Embed(description=f"{user} is not in the server.",colour=discord.Colour.red())
 				await ctx.send(embed = embed)
 
+	
 def setup(bot):
 	bot.add_cog(Mod(bot))
