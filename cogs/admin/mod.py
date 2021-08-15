@@ -4,6 +4,7 @@ from discord.member import Member
 from discord.ext.commands import has_permissions
 from discord import guild
 
+
 class Mod(commands.Cog):
 	
 	def __init__(self,bot):
@@ -286,6 +287,11 @@ class Mod(commands.Cog):
 		embed = discord.Embed(description=f"○ Missing Parameter(s).\n○ Try mentioning user and provide an integer -> `sudo purge_user @user Number`.\n○ Type `sudo help` to know more  about each command.",colour=discord.Colour.red())
 		await ctx.channel.send(embed = embed)
 
-	
+	@commands.command(help = "Logs the bot out.", aliases = ("stopbot", "quit", "disconnect"))
+	@has_permissions(administrator = True)
+	async def logout(self,ctx):
+		await ctx.send(f"Hey {ctx.author.mention}, I am now logging out :wave:, Good Bye.")
+		await self.bot.logout()
+
 def setup(bot):
 	bot.add_cog(Mod(bot))

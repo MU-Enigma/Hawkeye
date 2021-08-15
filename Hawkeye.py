@@ -1,13 +1,14 @@
 import discord
 from discord.ext import commands
 from pathlib import Path
+import os
+from discord.ext.commands import has_permissions
 
 intents = discord.Intents.default()
 intents.members = True
 
 BOT_PREFIX = ('sudo ')
 bot = commands.Bot(command_prefix=BOT_PREFIX, intents = intents)
-
 
 @bot.event
 async def on_ready():
@@ -20,6 +21,7 @@ async def on_command_error(ctx, error):
 		embed = discord.Embed(description=f"○ Invalid command\n○ Type `sudo help` to know about each command.",colour=discord.Colour.red())
 		await ctx.send(embed = embed)
 		return
+
 if __name__ == '__main__':
 	res = Path("res")
 
