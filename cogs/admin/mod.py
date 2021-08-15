@@ -31,7 +31,6 @@ class Mod(commands.Cog):
 					else:
 						embed=discord.Embed(color=discord.Colour.red(), title="Administrator", description=f"{member} is an admin bot and is not allowed to be kicked.")
 						await ctx.send(embed = embed)
-
 				else:
 					if reason == None:
 						reason = "-"
@@ -58,7 +57,7 @@ class Mod(commands.Cog):
 			try:
 				member = await ctx.guild.fetch_member(int(str(user_ID)))
 				await kick_user(self,ctx,member,reason)
-			except Exception:	
+			except Exception as e:
 				user = await self.bot.fetch_user(user_ID)
 				embed = discord.Embed(description=f"{user} is not in the server.",colour=discord.Colour.red())
 				await ctx.send(embed = embed)
@@ -246,6 +245,47 @@ class Mod(commands.Cog):
 				user = await self.bot.fetch_user(user_ID)
 				embed = discord.Embed(description=f"{user} is not in the server.",colour=discord.Colour.red())
 				await ctx.send(embed = embed)
+				
+	@commands.command(pass_context = True ,help = "Purge messages             | sudo purge AnInteger", aliases = ("clear", "cls"))
+	@has_permissions(administrator=True)
+	async def purge(self, ctx, limit: int):
+		await ctx.channel.purge(limit = limit+1)
 
+	@purge.error
+	async def purge_error(self,ctx, error):
+		count = 0
+		try:
+			id = int(ctx.message.reference.message_id)
+			msg = await ctx.fetch_message(id)
+			if id is not None and msg is not None:
+				async for m in ctx.channel.history(limit = None, oldest_first = False):
+					if m.id == id:
+						count+=1
+						break
+					else:
+						count+=1
+				await ctx.channel.purge(limit = count)
+			else:
+				embed = discord.Embed(description="Hey! something went wrong",colour=discord.Colour.red())
+				await ctx.channel.send(embed = embed)
+		except:
+			embed = discord.Embed(description=f"○ A parameter is missing.\n○ Try mentioning one integer -> `sudo purge Number`.\n○ Or else reply to a message and type -> `sudo purge` .\n○ Type `sudo help` to know more about each command.",colour=discord.Colour.red())
+			await ctx.channel.send(embed = embed)
+
+	@commands.command(pass_context = True ,help = "Purge messages of @user    | sudo purge_user @mention AnInteger", aliases = ("clear_user", "cls_user"))
+	@has_permissions(administrator=True)
+	async def purge_user(self, ctx, member:discord.Member, limit: int):
+		def is_member(m):
+			return m.author == member
+
+		await ctx.channel.purge(limit = limit+1, check = is_member)
+		await ctx.channel.send(member.mention+", Your messages have been deleted")
+		
+	@purge_user.error
+	async def purge_user_error(self,ctx, error):
+		embed = discord.Embed(description=f"○ Missing Parameter(s).\n○ Try mentioning user and provide an integer -> `sudo purge_user @user Number`.\n○ Type `sudo help` to know more  about each command.",colour=discord.Colour.red())
+		await ctx.channel.send(embed = embed)
+
+	
 def setup(bot):
 	bot.add_cog(Mod(bot))

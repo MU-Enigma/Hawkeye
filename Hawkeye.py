@@ -28,7 +28,7 @@ if __name__ == '__main__':
 
 	cogs = [
 		'cogs.admin.mod',
-		'cogs.admin.random'
+		'cogs.admin.admin_misc'
 	]
 
 	for cog in cogs:
