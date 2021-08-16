@@ -2,7 +2,6 @@ import discord
 from discord.ext import commands
 from discord.member import Member
 from discord.ext.commands import has_permissions
-from discord import guild
 
 
 class Mod(commands.Cog):
@@ -66,7 +65,7 @@ class Mod(commands.Cog):
 
 	@commands.command(help = "Bans the specified user    | sudo ban @User")
 	@has_permissions(administrator=True)
-	async def ban(self,ctx, *, reason =None):
+	async def ban(self,ctx, *, reason = None):
 		if reason == None:
 			embed = discord.Embed(description=f"○ A parameter is missing.\n○ Try mentioning the user -> `sudo ban @user`.\n○ Type `sudo help` to know about each command.",colour=discord.Colour.red())
 			await ctx.send(embed = embed)
@@ -148,7 +147,7 @@ class Mod(commands.Cog):
 				await ctx.send(embed=embed)
 	
 	@commands.command(pass_context = True,help="Mutes the specified user   | sudo mute @user")
-	@commands.has_permissions(administrator = True)
+	@has_permissions(administrator = True)
 	async def mute(self,ctx, *, reason=None):
 		if reason == None:
 			embed = discord.Embed(description=f"○ A parameter is missing.\n○ Try mentioning the user -> `sudo mute @User`.\n○ Type `sudo help` to know about each command.",colour=discord.Colour.red())
@@ -209,7 +208,7 @@ class Mod(commands.Cog):
 				await ctx.send(embed = embed)
 
 	@commands.command(help="Unmutes the specified user | sudo unmute @user")
-	@commands.has_permissions(manage_messages=True)
+	@has_permissions(manage_messages=True)
 	async def unmute(self,ctx,*, reason = None):
 		if reason == None:
 			embed = discord.Embed(description=f"○ A parameter is missing.\n○ Try mentioning the user -> `sudo unmute @User`.\n○ Type `sudo help` to know about each command.",colour=discord.Colour.red())
@@ -255,6 +254,8 @@ class Mod(commands.Cog):
 
 	@purge.error
 	async def purge_error(self,ctx, error):
+		if isinstance(error, commands.MissingPermissions):
+			return
 		count = 0
 		try:
 			id = int(ctx.message.reference.message_id)
@@ -285,6 +286,9 @@ class Mod(commands.Cog):
 		
 	@purge_user.error
 	async def purge_user_error(self,ctx, error):
+		if isinstance(error, commands.MissingPermissions):
+			return
+			
 		embed = discord.Embed(description=f"○ Missing Parameter(s).\n○ Try mentioning user and provide an integer -> `sudo purge_user @user Number`.\n○ Type `sudo help` to know more  about each command.",colour=discord.Colour.red())
 		await ctx.channel.send(embed = embed)
 
