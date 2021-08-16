@@ -80,5 +80,6 @@ class admin_misc(commands.Cog):
 					else:
 						embed = discord.Embed(description=f"Invalid user input.", colour=discord.Colour.red())
 						await ctx.send(embed = embed)
+						
 def setup(bot):
 	bot.add_cog(admin_misc(bot))
