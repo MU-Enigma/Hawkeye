@@ -178,12 +178,13 @@ class Mod(commands.Cog):
 
 						for channel in guild.channels:
 							await channel.set_permissions(mutedRole, speak=True, send_messages=False, read_message_history=True, read_messages=True)
-					
-					await member.add_roles(mutedRole, reason=reason)
-					embed=discord.Embed(color=discord.Colour.red(), title=f"{member} was muted", description=f"Reason: {reason}")
-					await ctx.send(embed=embed)
-					message = f"You have been banned from {ctx.guild.name} {reason}."
-					await member.send(message)
+					if mutedRole in member.roles:
+						embed = discord.Embed(description=f"{member} has already been muted.",colour=discord.Colour.red())
+						await ctx.send(embed=embed)
+					else:
+						await member.add_roles(mutedRole, reason=reason)
+						embed=discord.Embed(color=discord.Colour.red(), title=f"{member} was muted", description=f"Reason: {reason}")
+						await ctx.send(embed=embed)
 
 		# iterating through the USER_ID list 
 		
