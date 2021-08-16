@@ -255,8 +255,6 @@ class Mod(commands.Cog):
 	async def purge_error(self,ctx, error):
 		if isinstance(error, commands.MissingPermissions):
 			return
-			# embed = discord.Embed(description="You don't have permission to use this command.",colour=discord.Colour.red())
-			# await ctx.send(embed = embed)
 		count = 0
 		try:
 			id = int(ctx.message.reference.message_id)
@@ -289,8 +287,7 @@ class Mod(commands.Cog):
 	async def purge_user_error(self,ctx, error):
 		if isinstance(error, commands.MissingPermissions):
 			return
-			# embed = discord.Embed(description="You don't have permission to use this command.",colour=discord.Colour.red())
-			# await ctx.send(embed = embed)
+			
 		embed = discord.Embed(description=f"○ Missing Parameter(s).\n○ Try mentioning user and provide an integer -> `sudo purge_user @user Number`.\n○ Type `sudo help` to know more  about each command.",colour=discord.Colour.red())
 		await ctx.channel.send(embed = embed)
 

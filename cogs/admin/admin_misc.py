@@ -23,8 +23,6 @@ class admin_misc(commands.Cog):
 	async def echo_error(self,ctx, error):
 		if isinstance(error, commands.MissingPermissions):
 			pass
-			# embed = discord.Embed(description="You don't have permission to use this command.",colour=discord.Colour.red())
-			# await ctx.send(embed = embed)
 		else:
 			embed = discord.Embed(description=f"○ No message entered.\n○ Try typing something after echo -> `sudo echo YourMessage`.\n○ Type `sudo help` to know more about each command.",colour=discord.Colour.red())
 			await ctx.channel.send(embed = embed)
