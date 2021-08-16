@@ -2,7 +2,6 @@ import discord
 from discord.ext import commands
 from discord.ext.commands import has_permissions
 
-
 class admin_misc(commands.Cog):
 	
 	def __init__(self,bot):
@@ -10,17 +9,26 @@ class admin_misc(commands.Cog):
 
 	@commands.command(help = "Sends message anonymously  | sudo echo YourMessage ")
 	@has_permissions(administrator=True)
-	async def echo(self, ctx, *, message):
+	async def echo(self, ctx, *message):
 		await ctx.message.delete()
+		message = list(message)
+		if message[0] == "--raw" or message[0] == "-r":
+			await ctx.send(" ".join(message[1:]))
+			return
+		message = " ".join(message)
 		embed = discord.Embed(description=f"{message}",colour=discord.Colour.orange())
 		await ctx.send(embed = embed)
 
 	@echo.error
 	async def echo_error(self,ctx, error):
-		embed = discord.Embed(description=f"○ No message entered.\n○ Try typing something after echo -> `sudo echo YourMessage`.\n○ Type `sudo help` to know more about each command.",colour=discord.Colour.red())
-		await ctx.channel.send(embed = embed)
+		if isinstance(error, commands.MissingPermissions):
+			pass
+		else:
+			embed = discord.Embed(description=f"○ No message entered.\n○ Try typing something after echo -> `sudo echo YourMessage`.\n○ Type `sudo help` to know more about each command.",colour=discord.Colour.red())
+			await ctx.channel.send(embed = embed)
 	
 	@commands.command(help = "SUPERPINGS PEOPLE! VERY RISKY")
+	@has_permissions(administrator=True)
 	async def superping(self,ctx,*arg):
 		if str(arg) == '()' or (len(arg) == 1 and arg[0].isdigit()) :
 			embed = discord.Embed(description=f"○ A parameter is missing.\n○ Try mentioning the user -> `sudo superping @User`.\n○ Type `sudo help` to know about each command.",colour=discord.Colour.red())
