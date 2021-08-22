@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from discord.member import Member
 from discord.ext.commands import has_permissions
+import json
 
 
 class Mod(commands.Cog):
@@ -246,7 +247,92 @@ class Mod(commands.Cog):
 				user = await self.bot.fetch_user(user_ID)
 				embed = discord.Embed(description=f"{user} is not in the server.",colour=discord.Colour.red())
 				await ctx.send(embed = embed)
-				
+
+
+	@commands.command(help = f"Warns the specified user  | sudo warn @user")
+	@has_permissions(administrator = True)
+	async def warn(self,ctx, member:discord.Member, *, reason = "-"):
+		if member.guild_permissions.administrator:
+			if not member.bot:
+				embed=discord.Embed(color=discord.Colour.red(), title="Administrator", description=f"{member} is an administrator and hence cannot be warned.")
+				await ctx.send(embed = embed)
+				return
+			else:
+				embed=discord.Embed(color=discord.Colour.red(), title="Administrator", description=f"{member} is an admin bot and hence cannot be warned.")
+				await ctx.send(embed = embed)
+				return
+		try:
+			with open("assets/warnings.json", "rt") as file:
+				data = json.load(file)
+		except:
+			data = {}
+		id = str(member.id)
+		if id in data.keys():
+			data[id]["warn_count"] += 1
+			data[id]["reason"].append(reason)
+		else:
+			data[id] = {
+				"warn_count": 1,
+				"reason": [reason]
+			}
+		with open("assets/warnings.json", "wt") as file:
+			await ctx.channel.send(str(member.mention) +" has been warned")
+			if data[id]["warn_count"] >= 3:
+				await member.ban(reason = reason)
+				await ctx.send(str(member)+ " has been banned")
+				del data[id]
+			json.dump(data, file)
+
+
+
+	@warn.error
+	async def warn_error(self, ctx, error):
+		await ctx.send(error)
+
+	@commands.command(help = f"Revokes one warning of the specified user  | sudo revoke_warn @user")
+	@has_permissions(administrator = True)
+	async def remove_warn(self,ctx, member:discord.Member):
+		try:
+			with open("assets/warnings.json", "rt") as file:
+				data = json.load(file)
+		except:
+			data = {}
+		id = str(member.id)
+		if id in data.keys():
+			if data[id]["warn_count"] <= 0:
+				await ctx.send("Member has not been warned at least once")
+				return
+			data[id]["warn_count"] -= 1
+			data[id]["reason"].pop()
+		else:
+			await ctx.send("Member has not been warned at least once")
+			return
+		with open("assets/warnings.json", "wt") as file:
+			json.dump(data, file)
+
+
+	@commands.command(help = f"Shows the warning of the specified user  | sudo show_warning @user")
+	@has_permissions(administrator = True)
+	async def show_warning(self,ctx, member:discord.Member):
+		try:
+			with open("assets/warnings.json", "rt") as file:
+				data = json.load(file)
+		except:
+			data = {}
+		id = str(member.id)
+		if id in data.keys() and data[id]["warn_count"]>0 :
+			await ctx.send((str(member.name))+" has been warned "+ str(data[id]["warn_count"])+ " times")
+			await ctx.send("The reasons are :")
+			for reason in data[id]["reason"]:
+				await ctx.send("o "+ reason)
+		else:
+			await ctx.send("Member has not been warned at least once")
+
+	@show_warning.error
+	async def show_warning_error(self, ctx, error):
+		await ctx.send(error)
+
+
 	@commands.command(pass_context = True ,help = "Purge messages             | sudo purge AnInteger", aliases = ("clear", "cls"))
 	@has_permissions(administrator=True)
 	async def purge(self, ctx, limit: int):
@@ -283,12 +369,12 @@ class Mod(commands.Cog):
 
 		await ctx.channel.purge(limit = limit+1, check = is_member)
 		await ctx.channel.send(member.mention+", Your messages have been deleted")
-		
+
 	@purge_user.error
 	async def purge_user_error(self,ctx, error):
 		if isinstance(error, commands.MissingPermissions):
 			return
-			
+
 		embed = discord.Embed(description=f"○ Missing Parameter(s).\n○ Try mentioning user and provide an integer -> `sudo purge_user @user Number`.\n○ Type `sudo help` to know more  about each command.",colour=discord.Colour.red())
 		await ctx.channel.send(embed = embed)
 
