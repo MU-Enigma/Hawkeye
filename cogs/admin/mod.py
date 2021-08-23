@@ -15,11 +15,11 @@ class Mod(commands.Cog):
 	async def kick(self,ctx, *, reason = None):
 		if reason == None:
 			embed = discord.Embed(description=f"○ A parameter is missing.\n○ Try mentioning the user -> `sudo kick @User`.\n○ Type `sudo help` to know about each command.",colour=discord.Colour.red())
-			await ctx.send(embed = embed)
+			await ctx.channel.send(embed = embed)
 			return
 		async def kick_user(self,ctx,member:discord.Member, reason):
 			if member == self.bot.user:
-				await ctx.send("Nice Try!")
+				await ctx.channel.send("Nice Try!")
 			else:
 				if member == None or member == ctx.message.author:
 					await ctx.channel.send("You cannot kick yourself.")
@@ -28,10 +28,10 @@ class Mod(commands.Cog):
 				if member.guild_permissions.administrator:
 					if not member.bot:
 						embed=discord.Embed(color=discord.Colour.red(), title="Administrator", description=f"{member} is an administrator and is not allowed to be kicked.")
-						await ctx.send(embed = embed)
+						await ctx.channel.send(embed = embed)
 					else:
 						embed=discord.Embed(color=discord.Colour.red(), title="Administrator", description=f"{member} is an admin bot and is not allowed to be kicked.")
-						await ctx.send(embed = embed)
+						await ctx.channel.send(embed = embed)
 				else:
 					if reason == None:
 						reason = "-"
@@ -41,7 +41,7 @@ class Mod(commands.Cog):
 					await member.send(message)
 					await member.kick(reason = reason)
 					embed=discord.Embed(color=discord.Colour.red(), title=f"{member} was kicked", description=f"Reason: {reason}")
-					await ctx.send(embed = embed)
+					await ctx.channel.send(embed = embed)
 		
 		# iterating through the USER_ID list
 		extra_Users = reason.split(">")
@@ -61,7 +61,7 @@ class Mod(commands.Cog):
 			except Exception as e:
 				user = await self.bot.fetch_user(user_ID)
 				embed = discord.Embed(description=f"{user} is not in the server.",colour=discord.Colour.red())
-				await ctx.send(embed = embed)
+				await ctx.channel.send(embed = embed)
 		
 
 	@commands.command(help = "Bans the specified user    | sudo ban @User")
@@ -69,11 +69,11 @@ class Mod(commands.Cog):
 	async def ban(self,ctx, *, reason = None):
 		if reason == None:
 			embed = discord.Embed(description=f"○ A parameter is missing.\n○ Try mentioning the user -> `sudo ban @user`.\n○ Type `sudo help` to know about each command.",colour=discord.Colour.red())
-			await ctx.send(embed = embed)
+			await ctx.channel.send(embed = embed)
 			return
 		async def ban_user(self, ctx, member: discord.Member, reason):
 			if member == self.bot.user:
-				await ctx.send("Nice Try!")
+				await ctx.channel.send("Nice Try!")
 			else:
 				if member == None or member == ctx.message.author:
 					await ctx.channel.send("You cannot ban yourself.")
@@ -82,10 +82,10 @@ class Mod(commands.Cog):
 					if member.guild_permissions.administrator:
 						if not member.bot:
 							embed=discord.Embed(color=discord.Colour.red(), title="Administrator", description=f"{member} is an administrator and is not allowed to be banned.")
-							await ctx.send(embed = embed)
+							await ctx.channel.send(embed = embed)
 						else:
 							embed=discord.Embed(color=discord.Colour.red(), title="Administrator", description=f"{member} is an admin bot and is not allowed to be banned.")
-							await ctx.send(embed = embed)
+							await ctx.channel.send(embed = embed)
 					else:
 						if member == None or member == ctx.message.author:
 							await ctx.channel.send("You cannot ban yourself.")
@@ -100,7 +100,7 @@ class Mod(commands.Cog):
 						if reason == None:
 							reason = "-"
 						embed=discord.Embed(color=discord.Colour.red(), title=f"{member} was banned", description=f"Reason: {reason}")
-						await ctx.send(embed = embed)
+						await ctx.channel.send(embed = embed)
 						await member.ban(reason = reason)
 		# iterating through the USER_ID list
 		
@@ -118,17 +118,18 @@ class Mod(commands.Cog):
 			try:
 				member = await ctx.guild.fetch_member(int(str(user_ID)))
 				await ban_user(self,ctx,member,reason)
-			except Exception:
+			except Exception as e:
+				print(e)
 				user = await self.bot.fetch_user(user_ID)
 				embed = discord.Embed(description=f"{user} is not in the server.",colour=discord.Colour.red())
-				await ctx.send(embed = embed)
+				await ctx.channel.send(embed = embed)
 
 	@commands.command(help = f"Unbans the specified user  | sudo unban Hawkeye#1180")
 	@has_permissions(administrator = True)
 	async def unban(self,ctx, *, arg = None):
 		if arg == None:
 			embed = discord.Embed(description=f"○ A parameter is missing.\n○ Try mentioning the user -> `sudo unban Hawkeye#1180`.\n○ Type `sudo help` to know about each command.",colour=discord.Colour.red())
-			await ctx.send(embed = embed)
+			await ctx.channel.send(embed = embed)
 			return
 		users = arg.split()
 		for member in users:
@@ -145,19 +146,19 @@ class Mod(commands.Cog):
 			# if the user had not been banned
 			if not was_banned:
 				embed = discord.Embed(description=f"{member} had not been banned in the first place.",colour=discord.Colour.red())
-				await ctx.send(embed=embed)
+				await ctx.channel.send(embed=embed)
 	
 	@commands.command(pass_context = True,help="Mutes the specified user   | sudo mute @user")
 	@has_permissions(administrator = True)
 	async def mute(self,ctx, *, reason=None):
 		if reason == None:
 			embed = discord.Embed(description=f"○ A parameter is missing.\n○ Try mentioning the user -> `sudo mute @User`.\n○ Type `sudo help` to know about each command.",colour=discord.Colour.red())
-			await ctx.send(embed = embed)
+			await ctx.channel.send(embed = embed)
 			return
 
 		async def mute_user(self, ctx, member: Member, reason):
 			if member == self.bot.user:
-				await ctx.send("Nice Try!")
+				await ctx.channel.send("Nice Try!")
 			else:
 				if member == None or member == ctx.message.author:
 					await ctx.channel.send("You cannot mute yourself.")
@@ -165,10 +166,10 @@ class Mod(commands.Cog):
 				if member.guild_permissions.administrator:
 					if not member.bot:
 						embed=discord.Embed(color=discord.Colour.red(), title="Administrator", description=f"{member} is an administrator and is not allowed to be muted.")
-						await ctx.send(embed = embed)
+						await ctx.channel.send(embed = embed)
 					else:
 						embed=discord.Embed(color=discord.Colour.red(), title="Administrator", description=f"{member} is an admin bot and is not allowed to be muted.")
-						await ctx.send(embed = embed)
+						await ctx.channel.send(embed = embed)
 
 				else:
 					guild = ctx.guild
@@ -180,11 +181,11 @@ class Mod(commands.Cog):
 							await channel.set_permissions(mutedRole, speak=True, send_messages=False, read_message_history=True, read_messages=True)
 					if mutedRole in member.roles:
 						embed = discord.Embed(description=f"{member} has already been muted.",colour=discord.Colour.red())
-						await ctx.send(embed=embed)
+						await ctx.channel.send(embed=embed)
 					else:
 						await member.add_roles(mutedRole, reason=reason)
 						embed=discord.Embed(color=discord.Colour.red(), title=f"{member} was muted", description=f"Reason: {reason}")
-						await ctx.send(embed=embed)
+						await ctx.channel.send(embed=embed)
 
 		# iterating through the USER_ID list 
 		
@@ -206,14 +207,14 @@ class Mod(commands.Cog):
 			except Exception:
 				user = await self.bot.fetch_user(user_ID)
 				embed = discord.Embed(description=f"{user} is not in the server.",colour=discord.Colour.red())
-				await ctx.send(embed = embed)
+				await ctx.channel.send(embed = embed)
 
 	@commands.command(help="Unmutes the specified user | sudo unmute @user")
 	@has_permissions(manage_messages=True)
 	async def unmute(self,ctx,*, reason = None):
 		if reason == None:
 			embed = discord.Embed(description=f"○ A parameter is missing.\n○ Try mentioning the user -> `sudo unmute @User`.\n○ Type `sudo help` to know about each command.",colour=discord.Colour.red())
-			await ctx.send(embed = embed)
+			await ctx.channel.send(embed = embed)
 			return
 		async def unmute_user(self,ctx,member: discord.Member, reason):
 			mutedRole = discord.utils.get(ctx.guild.roles, name="Muted")
@@ -222,10 +223,10 @@ class Mod(commands.Cog):
 				if not member.bot:
 					await member.send(f" You have unmuted from: - {ctx.guild.name}.")
 				embed = discord.Embed(description=f"Unmuted-{member.mention}",colour=discord.Colour.red())
-				await ctx.send(embed=embed)
+				await ctx.channel.send(embed=embed)
 			else:
 				embed = discord.Embed(description=f"{member} had not been muted in the first place.",colour=discord.Colour.red())
-				await ctx.send(embed=embed)
+				await ctx.channel.send(embed=embed)
 
 		# iterating through the USER_ID list
 
@@ -246,68 +247,83 @@ class Mod(commands.Cog):
 			except Exception:
 				user = await self.bot.fetch_user(user_ID)
 				embed = discord.Embed(description=f"{user} is not in the server.",colour=discord.Colour.red())
-				await ctx.send(embed = embed)
+				await ctx.channel.send(embed = embed)
 
 
 	@commands.command(help = f"Warns the specified user  | sudo warn @user")
 	@has_permissions(administrator = True)
-	async def warn(self,ctx, member:discord.Member, *, reason = "-"):
+	async def warn(self,ctx, member:discord.Member, *, reason = ""):
 		if member.guild_permissions.administrator:
 			if not member.bot:
 				embed=discord.Embed(color=discord.Colour.red(), title="Administrator", description=f"{member} is an administrator and hence cannot be warned.")
-				await ctx.send(embed = embed)
+				await ctx.channel.send(embed = embed)
 				return
 			else:
 				embed=discord.Embed(color=discord.Colour.red(), title="Administrator", description=f"{member} is an admin bot and hence cannot be warned.")
-				await ctx.send(embed = embed)
+				await ctx.channel.send(embed = embed)
 				return
 		try:
-			with open("assets/warnings.json", "rt") as file:
+			with open("res/data.json", "rt") as file:
 				data = json.load(file)
 		except:
 			data = {}
 		id = str(member.id)
-		if id in data.keys():
-			data[id]["warn_count"] += 1
-			data[id]["reason"].append(reason)
+		if not "warn" in data:
+			data["warn"] = {}
+		if id in data["warn"].keys():
+			data["warn"][id]["warn_count"] += 1
+			data["warn"][id]["reason"].append(reason)
 		else:
-			data[id] = {
+			data["warn"][id] = {
 				"warn_count": 1,
 				"reason": [reason]
 			}
-		with open("assets/warnings.json", "wt") as file:
-			await ctx.channel.send(str(member.mention) +" has been warned")
-			if data[id]["warn_count"] >= 3:
+		with open("res/data.json", "wt") as file:
+			if reason == "":
+				embed = discord.Embed(description = f"{member.mention} has been warned.", colour = discord.Colour.dark_red())
+			else:
+				embed = discord.Embed(description = f"{member.mention} has been warned.\nReason : {reason}", colour = discord.Colour.dark_red())
+			await ctx.channel.send(embed = embed)
+			if data["warn"][id]["warn_count"] >= 4:
+				message = f"You have been banned from {ctx.guild.name} {reason}."
+				if not member.bot:
+					await member.send(message)
 				await member.ban(reason = reason)
-				await ctx.send(str(member)+ " has been banned")
-				del data[id]
+				embed = discord.Embed(description = f"{member} has been banned from the server {reason}.", colour=discord.Colour.dark_red())
+				await ctx.channel.send(embed = embed)
+				del data["warn"][id]
 			json.dump(data, file)
-
-
 
 	@warn.error
 	async def warn_error(self, ctx, error):
-		await ctx.send(error)
+		await ctx.channel.send(error)
 
 	@commands.command(help = f"Revokes one warning of the specified user  | sudo revoke_warn @user")
 	@has_permissions(administrator = True)
 	async def remove_warn(self,ctx, member:discord.Member):
 		try:
-			with open("assets/warnings.json", "rt") as file:
+			with open("res/data.json", "rt") as file:
 				data = json.load(file)
 		except:
 			data = {}
 		id = str(member.id)
-		if id in data.keys():
-			if data[id]["warn_count"] <= 0:
-				await ctx.send("Member has not been warned at least once")
+		if not "warn" in data:
+			data["warn"] = {}
+		if id in data["warn"]:
+			if data["warn"][id]["warn_count"] <= 0:
+				embed = discord.Embed(description = "Member has not been warned at least once.", colour=discord.Colour.light_gray())
+				await ctx.channel.send(embed = embed)
 				return
-			data[id]["warn_count"] -= 1
-			data[id]["reason"].pop()
+			data["warn"][id]["warn_count"] -= 1
+			data["warn"][id]["reason"].pop()
+			#await ctx.channel.send(f"Cleared a warning for {member.name}.")
+			embed = discord.Embed(description = f"Cleared a warning for {member}.", colour=discord.Colour.light_gray())
+			await ctx.channel.send(embed = embed)
 		else:
-			await ctx.send("Member has not been warned at least once")
+			embed = discord.Embed(description = "Member has not been warned at least once.", colour=discord.Colour.light_gray())
+			await ctx.channel.send(embed = embed)
 			return
-		with open("assets/warnings.json", "wt") as file:
+		with open("res/data.json", "wt") as file:
 			json.dump(data, file)
 
 
@@ -315,22 +331,33 @@ class Mod(commands.Cog):
 	@has_permissions(administrator = True)
 	async def show_warning(self,ctx, member:discord.Member):
 		try:
-			with open("assets/warnings.json", "rt") as file:
+			with open("res/data.json", "rt") as file:
 				data = json.load(file)
 		except:
 			data = {}
 		id = str(member.id)
-		if id in data.keys() and data[id]["warn_count"]>0 :
-			await ctx.send((str(member.name))+" has been warned "+ str(data[id]["warn_count"])+ " times")
-			await ctx.send("The reasons are :")
-			for reason in data[id]["reason"]:
-				await ctx.send("o "+ reason)
+		if not "warn" in data:
+			data["warn"] = {}
+		if id in data["warn"] and data["warn"][id]["warn_count"]>0:
+			if data["warn"][id]["warn_count"] > 1:
+				embed = discord.Embed(title = f"{member.name} has been warned {data['warn'][id]['warn_count']} times.")
+			else:
+				embed = discord.Embed(title = f"{member.name} has been warned {data['warn'][id]['warn_count']} time.")
+			count = 1
+			text = ""
+			for reason in data["warn"][id]["reason"]:
+				text += f"\n{count}) {reason}"
+				#await ctx.channel.send(reason)
+				count+=1
+			embed.add_field(name = "Reasons :", value = text, inline = False)
+			await ctx.channel.send(embed = embed)
 		else:
-			await ctx.send("Member has not been warned at least once")
+			embed = discord.Embed(description = "Member has not been warned at least once.", colour=discord.Colour.light_gray())
+			await ctx.channel.send(embed = embed)
 
 	@show_warning.error
 	async def show_warning_error(self, ctx, error):
-		await ctx.send(error)
+		await ctx.channel.send(error)
 
 
 	@commands.command(pass_context = True ,help = "Purge messages             | sudo purge AnInteger", aliases = ("clear", "cls"))
@@ -381,7 +408,7 @@ class Mod(commands.Cog):
 	@commands.command(help = "Logs the bot out.", aliases = ("stopbot", "quit", "disconnect"))
 	@has_permissions(administrator = True)
 	async def logout(self,ctx):
-		await ctx.send(f"Hey {ctx.author.mention}, I am now logging out :wave:, Good Bye.")
+		await ctx.channel.send(f"Hey {ctx.author.mention}, I am now logging out :wave:, Good Bye.")
 		await self.bot.logout()
 
 def setup(bot):

@@ -1,8 +1,7 @@
 import discord
 from discord.ext import commands
 from pathlib import Path
-import os
-from discord.ext.commands import has_permissions
+
 
 intents = discord.Intents.default()
 intents.members = True
@@ -12,7 +11,7 @@ bot = commands.Bot(command_prefix=BOT_PREFIX, intents = intents)
 
 @bot.event
 async def on_ready():
-	print ("\nLogged in as:\t" + str(bot.user))
+	print (f"\nLogged in as:\t {str(bot.user)}")
 	print ("-----------------")
 
 @bot.event
@@ -30,7 +29,8 @@ if __name__ == '__main__':
 
 	cogs = [
 		'cogs.admin.mod',
-		'cogs.admin.admin_misc'
+		'cogs.admin.admin_misc',
+		'cogs.admin.announcement'
 	]
 
 	for cog in cogs:
