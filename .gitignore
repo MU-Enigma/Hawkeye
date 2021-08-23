@@ -1,3 +1,4 @@
 env
 res/TOKEN
 **/__pycache__
+**/*.json
