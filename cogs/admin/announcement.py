@@ -7,8 +7,7 @@ import uuid
 import datetime
 import asyncio
 import os
-
-
+import shortuuid
 
 class announcement(commands.Cog):
 	
@@ -57,7 +56,7 @@ class announcement(commands.Cog):
 			await ctx.channel.send("Time has already passed, I don't have a time machine unfortunately.")
 			return
 
-		id = uuid.uuid1().hex
+		id = shortuuid.uuid().hex
 		if not 'events' in data:
 			data["events"] = {}
 		data["events"][id] = {

@@ -110,7 +110,9 @@ class admin_misc(commands.Cog):
 					else:
 						embed = discord.Embed(description=f"Invalid user input.", colour=discord.Colour.red())
 						await ctx.channel.send(embed = embed)
-
+	@superping.error
+	async def superping_error(self, ctx, error):
+		await ctx.channel.send(error)
 
 def setup(bot):
 	bot.add_cog(admin_misc(bot))

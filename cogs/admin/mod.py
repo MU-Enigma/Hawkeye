@@ -11,7 +11,7 @@ class Mod(commands.Cog):
 		self.bot = bot
 
 	@commands.command(help = "Kicks the specified user   | sudo kick @user", aliases = ("apt_remove","remove"))
-	@has_permissions(administrator=True)
+	@has_permissions(kick_members=True)
 	async def kick(self,ctx, *, reason = None):
 		if reason == None:
 			embed = discord.Embed(description=f"○ A parameter is missing.\n○ Try mentioning the user -> `sudo kick @User`.\n○ Type `sudo help` to know about each command.",colour=discord.Colour.red())
@@ -62,10 +62,12 @@ class Mod(commands.Cog):
 				user = await self.bot.fetch_user(user_ID)
 				embed = discord.Embed(description=f"{user} is not in the server.",colour=discord.Colour.red())
 				await ctx.channel.send(embed = embed)
-		
+	@kick.error
+	async def kick_error(self, ctx, error):
+		await ctx.channel.send(error)
 
 	@commands.command(help = "Bans the specified user    | sudo ban @User")
-	@has_permissions(administrator=True)
+	@has_permissions(ban_members=True)
 	async def ban(self,ctx, *, reason = None):
 		if reason == None:
 			embed = discord.Embed(description=f"○ A parameter is missing.\n○ Try mentioning the user -> `sudo ban @user`.\n○ Type `sudo help` to know about each command.",colour=discord.Colour.red())
@@ -123,7 +125,9 @@ class Mod(commands.Cog):
 				user = await self.bot.fetch_user(user_ID)
 				embed = discord.Embed(description=f"{user} is not in the server.",colour=discord.Colour.red())
 				await ctx.channel.send(embed = embed)
-
+	@ban.error
+	async def warn_error(self, ctx, error):
+		await ctx.channel.send(error)
 	@commands.command(help = f"Unbans the specified user  | sudo unban Hawkeye#1180")
 	@has_permissions(administrator = True)
 	async def unban(self,ctx, *, arg = None):
@@ -149,7 +153,7 @@ class Mod(commands.Cog):
 				await ctx.channel.send(embed=embed)
 	
 	@commands.command(pass_context = True,help="Mutes the specified user   | sudo mute @user")
-	@has_permissions(administrator = True)
+	@has_permissions(mute_members = True)
 	async def mute(self,ctx, *, reason=None):
 		if reason == None:
 			embed = discord.Embed(description=f"○ A parameter is missing.\n○ Try mentioning the user -> `sudo mute @User`.\n○ Type `sudo help` to know about each command.",colour=discord.Colour.red())
@@ -208,9 +212,12 @@ class Mod(commands.Cog):
 				user = await self.bot.fetch_user(user_ID)
 				embed = discord.Embed(description=f"{user} is not in the server.",colour=discord.Colour.red())
 				await ctx.channel.send(embed = embed)
+	@mute.error
+	async def mute_error(self, ctx, error):
+		await ctx.channel.send(error)
 
 	@commands.command(help="Unmutes the specified user | sudo unmute @user")
-	@has_permissions(manage_messages=True)
+	@has_permissions(manage_messages=True, manage_roles = True)
 	async def unmute(self,ctx,*, reason = None):
 		if reason == None:
 			embed = discord.Embed(description=f"○ A parameter is missing.\n○ Try mentioning the user -> `sudo unmute @User`.\n○ Type `sudo help` to know about each command.",colour=discord.Colour.red())
@@ -248,10 +255,12 @@ class Mod(commands.Cog):
 				user = await self.bot.fetch_user(user_ID)
 				embed = discord.Embed(description=f"{user} is not in the server.",colour=discord.Colour.red())
 				await ctx.channel.send(embed = embed)
-
+	@unmute.error
+	async def unmute_error(self, ctx, error):
+		await ctx.channel.send(error)
 
 	@commands.command(help = f"Warns the specified user  | sudo warn @user")
-	@has_permissions(administrator = True)
+	@has_permissions(ban_members = True)
 	async def warn(self,ctx, member:discord.Member, *, reason = ""):
 		if member.guild_permissions.administrator:
 			if not member.bot:
@@ -299,7 +308,7 @@ class Mod(commands.Cog):
 		await ctx.channel.send(error)
 
 	@commands.command(help = f"Revokes one warning of the specified user  | sudo revoke_warn @user")
-	@has_permissions(administrator = True)
+	@has_permissions(ban_members = True)
 	async def remove_warn(self,ctx, member:discord.Member):
 		try:
 			with open("res/data.json", "rt") as file:
@@ -325,6 +334,9 @@ class Mod(commands.Cog):
 			return
 		with open("res/data.json", "wt") as file:
 			json.dump(data, file)
+	@remove_warn.error
+	async def remove_warn_error(self, ctx, error):
+		await ctx.channel.send(error)
 
 
 	@commands.command(help = f"Shows the warning of the specified user  | sudo show_warning @user")
@@ -389,7 +401,7 @@ class Mod(commands.Cog):
 			await ctx.channel.send(embed = embed)
 
 	@commands.command(pass_context = True ,help = "Purge messages of @user    | sudo purge_user @mention AnInteger", aliases = ("clear_user", "cls_user"))
-	@has_permissions(administrator=True)
+	@has_permissions(manage_messages=True)
 	async def purge_user(self, ctx, member:discord.Member, limit: int):
 		def is_member(m):
 			return m.author == member
