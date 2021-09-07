@@ -1,3 +1,4 @@
+
 import discord
 from discord.ext import commands
 from pathlib import Path
@@ -30,8 +31,9 @@ if __name__ == '__main__':
 	cogs = [
 		'cogs.admin.mod',
 		'cogs.admin.admin_misc',
+		'cogs.admin.info',
 		'cogs.admin.announcement'
-	]
+		]
 
 	for cog in cogs:
 		print ("Loading Cog:\t", cog, "...")
