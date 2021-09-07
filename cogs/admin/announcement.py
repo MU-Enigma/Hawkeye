@@ -180,6 +180,6 @@ class announcement(commands.Cog):
 		except: 
 			embed = discord.Embed(description = "Something went wrong while removing events.", colour=discord.Colour.red())
 			await ctx.channel.send(embed = embed)
-
+	
 def setup(bot):
 	bot.add_cog(announcement(bot))

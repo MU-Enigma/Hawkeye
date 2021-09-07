@@ -30,7 +30,9 @@ if __name__ == '__main__':
 	cogs = [
 		'cogs.admin.mod',
 		'cogs.admin.admin_misc',
-		'cogs.admin.announcement'
+		'cogs.admin.announcement',
+		'cogs.admin.timer',
+		'cogs.admin.info'
 	]
 
 	for cog in cogs:

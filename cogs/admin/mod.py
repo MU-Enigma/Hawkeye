@@ -129,7 +129,7 @@ class Mod(commands.Cog):
 	async def warn_error(self, ctx, error):
 		await ctx.channel.send(error)
 	@commands.command(help = f"Unbans the specified user  | sudo unban Hawkeye#1180")
-	@has_permissions(administrator = True)
+	@has_permissions(ban_members = True)
 	async def unban(self,ctx, *, arg = None):
 		if arg == None:
 			embed = discord.Embed(description=f"○ A parameter is missing.\n○ Try mentioning the user -> `sudo unban Hawkeye#1180`.\n○ Type `sudo help` to know about each command.",colour=discord.Colour.red())
@@ -340,7 +340,7 @@ class Mod(commands.Cog):
 
 
 	@commands.command(help = f"Shows the warning of the specified user  | sudo show_warning @user")
-	@has_permissions(administrator = True)
+	#@has_permissions(administrator = True)
 	async def show_warning(self,ctx, member:discord.Member):
 		try:
 			with open("res/data.json", "rt") as file:
