@@ -7,7 +7,7 @@ import uuid
 import datetime
 import asyncio
 import os
-import shortuuid
+
 
 class announcement(commands.Cog):
 	
