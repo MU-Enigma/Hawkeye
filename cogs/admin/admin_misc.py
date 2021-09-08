@@ -58,7 +58,7 @@ class admin_misc(commands.Cog):
 			await ctx.channel.send(embed = embed)
 	
 	@commands.command(help = "SUPERPINGS PEOPLE! VERY RISKY")
-	@has_permissions(administrator=True)
+	@has_permissions(mention_everyone=True, manage_messages = True)
 	async def superping(self,ctx,*arg):
 		if str(arg) == '()' or (len(arg) == 1 and arg[0].isdigit()) :
 			embed = discord.Embed(description=f"○ A parameter is missing.\n○ Try mentioning the user -> `sudo superping @User`.\n○ Type `sudo help` to know about each command.",colour=discord.Colour.red())
