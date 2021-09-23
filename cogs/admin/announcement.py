@@ -9,7 +9,6 @@ import asyncio
 import os
 
 
-
 class announcement(commands.Cog):
 	
 	def __init__(self,bot):
@@ -57,7 +56,7 @@ class announcement(commands.Cog):
 			await ctx.channel.send("Time has already passed, I don't have a time machine unfortunately.")
 			return
 
-		id = uuid.uuid1().hex
+		id = shortuuid.uuid().hex
 		if not 'events' in data:
 			data["events"] = {}
 		data["events"][id] = {
@@ -113,9 +112,9 @@ class announcement(commands.Cog):
 			print("announcements channel not found!")
 			
 
-	@commands.command(pass_context = True ,help = " Shows All Announcements Scheduled    | sudo show_events", aliases = ["events-ls", "events", "announcements"])
+	@commands.command(pass_context = True ,help = " Shows All Announcements Scheduled    | sudo events", aliases = ["events-ls", "show_events", "announcements"])
 	@has_permissions(administrator=True)
-	async def show_events(self, ctx):
+	async def events(self, ctx):
 		
 		with open("res/data.json", "rt") as file:
 			data = json.load(file)
@@ -136,14 +135,14 @@ class announcement(commands.Cog):
 					count+=1
 				await ctx.channel.send(embed = embed)
 
-	@show_events.error
-	async def show_events_error(self, ctx, error):
+	@events.error
+	async def events_error(self, ctx, error):
 		embed = discord.Embed(description="There are no announcements scheduled, sudo add_event to add an event.", colour=discord.Colour.light_gray())
 		await ctx.channel.send(embed = embed)
 
 
 
-	@commands.command(pass_context = True ,help = " Adds Event    | sudo delete_event id")
+	@commands.command(pass_context = True ,help = " Adds Event    | sudo delete_event id", aliases = ["remove-event, delete-event, kill-event"])
 	@has_permissions(administrator=True)
 	async def delete_event(self, ctx, id:str):
 		id = id.strip()
@@ -167,7 +166,7 @@ class announcement(commands.Cog):
 			embed = discord.Embed(description=f"Invalid Event ID! Try Again.", colour=discord.Colour.red())
 			await ctx.channel.send(embed = embed)
 
-	@commands.command(pass_context = True ,help = " Delete All Events    | sudo delete_all_events")
+	@commands.command(pass_context = True ,help = " Delete All Events    | sudo delete_all_events", aliases = ["remove-all-events", "delete-all-events"])
 	@has_permissions(administrator=True)
 	async def delete_all_events(self, ctx):
 		try:
