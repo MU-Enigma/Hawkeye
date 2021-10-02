@@ -7,7 +7,7 @@ from pathlib import Path
 intents = discord.Intents.default()
 intents.members = True
 
-BOT_PREFIX = ('test ')
+BOT_PREFIX = ('sudo ')
 bot = commands.Bot(command_prefix=BOT_PREFIX, intents = intents)
 
 @bot.event
