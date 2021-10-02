@@ -1,6 +1,6 @@
 
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 from pathlib import Path
 
 
@@ -14,6 +14,11 @@ bot = commands.Bot(command_prefix=BOT_PREFIX, intents = intents)
 async def on_ready():
 	print (f"\nLogged in as:\t {str(bot.user)}")
 	print ("-----------------")
+	change_presence.start()
+
+@tasks.loop(seconds = 3600)
+async def change_presence():
+	await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name="sudo help"))
 
 @bot.event
 async def on_command_error(ctx, error):
