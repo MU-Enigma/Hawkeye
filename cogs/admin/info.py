@@ -27,8 +27,8 @@ class info(commands.Cog):
 								if member not in a and member not in members:
 									a.append(member)
 					if len(a)!=0:
-						members.append(a)    
-			print(members)
+						members.append(a)
+			members = [m for m in members if members.count(m) == 1]
 			s = [[str(e) for e in row] for row in members]
 			lens = [max(map(len, col)) for col in zip(*s)]
 			fmt = '\t'.join('{{:{}}}'.format(x) for x in lens)
