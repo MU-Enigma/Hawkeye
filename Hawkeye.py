@@ -37,6 +37,7 @@ if __name__ == '__main__':
 		'cogs.admin.mod',
 		'cogs.admin.admin_misc',
 		'cogs.admin.info',
+		'cogs.admin.src',
 		'cogs.admin.announcement'
 		]
 
