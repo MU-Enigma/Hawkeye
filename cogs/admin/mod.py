@@ -92,18 +92,22 @@ class Mod(commands.Cog):
 						if member == None or member == ctx.message.author:
 							await ctx.channel.send("You cannot ban yourself.")
 							return
-						if reason == None:
-							reason = "-"
-							message = f"You have been banned from {ctx.guild.name}."
 						else:
-							message = f"You have been banned from {ctx.guild.name} {reason}."
-						if not member.bot:
-							await member.send(message)
-						if reason == None:
-							reason = "-"
-						embed=discord.Embed(color=discord.Colour.red(), title=f"{member} was banned", description=f"Reason: {reason}")
-						await ctx.channel.send(embed = embed)
-						await member.ban(reason = reason)
+							if reason == None:
+								reason = "-"
+								message = f"You have been banned from {ctx.guild.name}."
+							else:
+								message = f"You have been banned from {ctx.guild.name} {reason}."
+							if not member.bot:
+								await member.send(message)
+							if reason == None:
+								reason = "-"
+							try:
+								embed=discord.Embed(color=discord.Colour.red(), title=f"{member} was banned", description=f"Reason: {reason}")
+								await ctx.channel.send(embed = embed)
+								await member.ban(reason = reason)
+							except e as exception:
+								print(e)
 		# iterating through the USER_ID list
 		
 		extra_Users = reason.split(">")

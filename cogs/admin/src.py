@@ -7,7 +7,7 @@ class src(commands.Cog):
 		self.bot = bot
 
 	@commands.command(help = "Returns the Github link   | sudo git")
-	async def git(ctx) :
+	async def git(self,ctx) :
 		gitembed= discord.Embed(title='')
 
 		gitembed.add_field(name='Github Link',value="https://github.com/MU-Enigma",inline=True)
@@ -16,7 +16,7 @@ class src(commands.Cog):
 
 
 	@commands.command(help = "Returns the Hawkeye Repo link   | sudo git")
-	async def src(ctx) :
+	async def src(self,ctx) :
 		srcembed= discord.Embed(title='')
 
 		srcembed.add_field(name='Hawkeye Repository',value="https://github.com/MU-Enigma/Hawkeye",inline=True)

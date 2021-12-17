@@ -54,7 +54,6 @@ class info(commands.Cog):
 			serverinfoEmbed.add_field(name='Bots', value=', '.join(bots_list), inline=True)
 			serverinfoEmbed.add_field(name='Admin list', value=" | ".join(table), inline=False)
 			
-			
 			await ctx.send(embed = serverinfoEmbed)
 		except Exception as e:
 			print(e)
