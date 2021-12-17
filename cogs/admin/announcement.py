@@ -3,7 +3,7 @@ import discord
 from discord.ext import commands
 from discord.ext.commands import has_permissions
 import json
-import uuid
+import shortuuid
 import datetime
 import asyncio
 import os
