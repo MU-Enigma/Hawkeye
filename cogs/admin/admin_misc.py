@@ -3,10 +3,6 @@ import discord
 from discord.ext import commands
 from discord.ext.commands import has_permissions
 import json
-import uuid
-import datetime
-import asyncio
-import os
 import os.path
 from os import path
 
