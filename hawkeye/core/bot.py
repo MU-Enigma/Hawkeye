@@ -23,6 +23,8 @@ class Hawkeye(lightbulb.BotApp):
         self.event_manager.subscribe(hikari.StoppingEvent, self.on_stopping)
         self.event_manager.subscribe(hikari.StoppedEvent, self.on_stopped)
         self.event_manager.subscribe(hikari.GuildMessageCreateEvent, self.on_message)
+        # self.event_manager.subscribe(lightbulb.CommandErrorEvent, on_error)
+        # self.event_manager.subscribe(hikari.ShardReadyEvent, self.on_shard_ready)
 
         super().run(asyncio_debug=True,
         coroutine_tracking_depth=20,    # enable tracking of coroutines, makes some asyncio
@@ -36,6 +38,7 @@ class Hawkeye(lightbulb.BotApp):
         print("Plugins Loaded ...")
 
     async def on_started(self, _: hikari.StartedEvent) -> None:
+        asyncio.create_task(Activity(self).change_status())
         print("Bot has started sucessfully.")
 
 
