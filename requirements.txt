@@ -1,0 +1,5 @@
+hikari
+python-dotenv
+uvloop>=0.16; sys_platform != "win32"
+hikari-lightbulb>=2.1.1
+pydantic
