@@ -2,10 +2,10 @@ import hikari
 import lightbulb
 from datetime import datetime
 
-testPlugin = lightbulb.Plugin("test")
+infoPlugin = lightbulb.Plugin("info")
 
 ## Returns info about the user
-@testPlugin.command
+@infoPlugin.command
 @lightbulb.option("target", "The member to get information about.", hikari.User, required=False)
 @lightbulb.command("userinfo", "Get info on a server member.")
 @lightbulb.implements(lightbulb.PrefixCommand, lightbulb.SlashCommand)
@@ -57,6 +57,8 @@ async def userinfo(ctx: lightbulb.Context) -> None:
 
     await ctx.respond(embed)
 
-
 def load(bot: lightbulb.BotApp) -> None:
-    bot.add_plugin(testPlugin)
+    bot.add_plugin(infoPlugin)
+
+def unload(bot: lightbulb.BotApp) -> None:
+    bot.remove_plugin(infoPlugin)
