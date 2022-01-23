@@ -5,7 +5,6 @@ import lightbulb
 from hawkeye.core.utils.Activity import Activity
 from hawkeye import bot_config
 
-HOME_GUILD_ID: 870647011899220040
 STDOUT_CHANNEL_ID: 931779674118451230
 
 class Hawkeye(lightbulb.BotApp):
@@ -45,8 +44,7 @@ class Hawkeye(lightbulb.BotApp):
         asyncio.create_task(Activity(self).change_status())
         print("Bot has started sucessfully.")
 
-        self.home_guild = self.cache.get_guild(HOME_GUILD_ID)
-        self.stdout_channel = self.home_guild.get_channel(STDOUT_CHANNEL_ID)
+        self.stdout_channel = await self.rest.fetch_channel(STDOUT_CHANNEL_ID)
         await self.stdout_channel.send(f"Testing... now online!")
 
 

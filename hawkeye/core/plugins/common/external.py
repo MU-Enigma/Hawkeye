@@ -1,4 +1,14 @@
+import hikari
+from hikari import Color
 import lightbulb
+import wikipedia
+
+import datetime as dt
+from datetime import datetime, time, timedelta
+from wikipedia import exceptions
+
+from wikipedia.wikipedia import languages
+
 
 externalPlugin = lightbulb.Plugin("External")
 
@@ -74,6 +84,48 @@ async def duckduckgo(ctx: lightbulb.SlashContext) -> None:
         return
 
     await ctx.respond(f"<https://lmddgtfy.net/?q={q.replace(' ', '+')}>")
+
+## Wikipedia search
+@externalPlugin.command()
+@lightbulb.set_help("Search wikipedia and receive in an embed")
+@lightbulb.option("search", "Key word of the search you want")
+@lightbulb.command(name="wikipedia", aliases=("wiki","wk"), description="Search a target in wikipedia.")
+@lightbulb.implements(lightbulb.SlashCommand)
+async def command_wikipedia(ctx: lightbulb.SlashContext) -> None:
+    try:
+        message = await ctx.respond("Searching...")
+        page = wikipedia.page(ctx.options.search)
+        image = page.images[0]
+        title = page.title
+        content = page.content
+
+        if len(content) > 600:
+            content = content[:600] + "...(READ MORE click on the title)"
+
+        else:
+            content = content
+
+        title_link = title.replace(" ", "_")
+        embed = (hikari.Embed(
+                colour=Color(0x3B9DFF),
+                description=content,
+                timestamp=dt.datetime.now().astimezone()
+
+        )
+        .set_image(image)
+        .set_author(name=title,url=f"https://en.wikipedia.org/wiki/{title_link}")
+        )
+        await ctx.respond(embed, reply=True)
+        await message.delete()
+
+    except(wikipedia.exceptions.DisambiguationError):
+        await message.edit(content="Try to be clearer with the search, multiple results found.")
+
+    except(wikipedia.exceptions.PageError):
+        await message.edit(content="Page not found.")
+
+    except(wikipedia.exceptions.HTTPTimeoutError):
+        await message.edit(content="The servers seem to be down. Please try again later.")
 
 def load(bot: lightbulb.BotApp) -> None:
     bot.add_plugin(externalPlugin)

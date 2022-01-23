@@ -1,4 +1,5 @@
 from bisect import insort_right
+import logging
 import hikari
 import lightbulb
 
@@ -10,11 +11,13 @@ adminPlugin.add_checks(
     lightbulb.has_guild_permissions(hikari.Permissions.ADMINISTRATOR)
 )
 
-##Bot reload
+## Extension reload
 @adminPlugin.command
-@lightbulb.command("reload", "Reloads the bot")
-async def reload(ctx: lightbulb.Context, plugin: str) -> None:
-    pass
+@lightbulb.command("reload", "Reloads the bot extension")
+async def reload(self, ctx: lightbulb.Context, extensions: str) -> None:
+    for ext in extensions.split(" "):
+        ctx.bot.reload_extensions(ext)
+        logging.info(f"{ext} extension reloaded")
 
 ## Ping
 @adminPlugin.command
@@ -22,20 +25,11 @@ async def reload(ctx: lightbulb.Context, plugin: str) -> None:
 async def ping(ctx: lightbulb.Context) -> None:
     await ctx.respond(f"Latency: {ctx.bot.heartbeat_latency * 1_000:,.0f} ms.")
 
-
-## Echoes
-@adminPlugin.command
-@lightbulb.option("text", "Repeats your message.", required = True, modifier=lightbulb.commands.OptionModifier.CONSUME_REST)
-@lightbulb.command("echo", "Echoesss.")
-@lightbulb.implements(lightbulb.PrefixCommand)
-async def echo(ctx: lightbulb.Context) -> None:
-    await ctx.respond(ctx.options.text)
-
 ## Shutdown
 @adminPlugin.command
 @lightbulb.command("shutdown", "Shuts down the bot.")
 async def shutdown(ctx: lightbulb.Context) -> None:
-    await ctx.bot.close()
+    await ctx.bot.close(force=False)
 
 def load(bot: lightbulb.BotApp) -> None:
     bot.add_plugin(adminPlugin)

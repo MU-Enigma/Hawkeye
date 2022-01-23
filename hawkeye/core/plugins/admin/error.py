@@ -24,6 +24,9 @@ async def on_command_error(self, event: lightbulb.CommandErrorEvent) -> None:
     if isinstance(event.exception, lightbulb.errors.CommandIsOnCooldown):
         return await event.context.respond(f"Command is on cooldown. Try again in {event.exception.retry_after:.0f} seconds.")
 
+    if isinstance(event.exception, lightbulb.errors.CommandInvocationError):
+        raise event.exception.original
+
     await event.context.respond("An error has occured. Reponses not found.")
     raise event.exception
 
