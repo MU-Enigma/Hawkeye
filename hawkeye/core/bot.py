@@ -5,8 +5,6 @@ import lightbulb
 from hawkeye.core.utils.Activity import Activity
 from hawkeye import bot_config
 
-STDOUT_CHANNEL_ID: 931779674118451230
-
 class Hawkeye(lightbulb.BotApp):
 
     def __init__(self) -> None:
@@ -43,10 +41,6 @@ class Hawkeye(lightbulb.BotApp):
     async def on_started(self, _: hikari.StartedEvent) -> None:
         asyncio.create_task(Activity(self).change_status())
         print("Bot has started sucessfully.")
-
-        self.stdout_channel = await self.rest.fetch_channel(STDOUT_CHANNEL_ID)
-        await self.stdout_channel.send(f"Testing... now online!")
-
 
     async def on_stopping(self, _: hikari.StoppingEvent) -> None:
         print("Bot is stopping...")

@@ -196,7 +196,7 @@ async def command_kiss(ctx: lightbulb.context) -> None:
 @funPlugin.command
 @lightbulb.set_help("Show you are changing the world whit code.")
 @lightbulb.option("member", "The member you choice for make the action.", hikari.Member, required=False)
-@lightbulb.command("program", "Programming alone or with someone.")
+@lightbulb.command("grind", "Programming alone or with someone.")
 @lightbulb.implements(lightbulb.PrefixCommand, lightbulb.SlashCommand)
 async def command_program(ctx: lightbulb.context) -> None:
     target = ctx.options.member
