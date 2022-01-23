@@ -56,3 +56,9 @@ async def mute(ctx : context.Context) -> None:
 	)
 
 	await ctx.respond(f"Muted {target.mention} until <t:{int(time())+time_s}>")
+
+def load(bot: lightbulb.BotApp) -> None:
+    bot.add_plugin(modPlugin)
+
+def unload(bot: lightbulb.BotApp) -> None:
+    bot.remove_plugin(modPlugin)
