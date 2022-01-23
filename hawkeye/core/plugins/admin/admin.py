@@ -1,3 +1,4 @@
+from bisect import insort_right
 import hikari
 import lightbulb
 
@@ -8,6 +9,12 @@ adminPlugin= lightbulb.Plugin("admin", description="Handles Admin Plugins")
 adminPlugin.add_checks(
     lightbulb.has_guild_permissions(hikari.Permissions.ADMINISTRATOR)
 )
+
+##Bot reload
+@adminPlugin.command
+@lightbulb.command("reload", "Reloads the bot")
+async def reload(ctx: lightbulb.Context, plugin: str) -> None:
+    pass
 
 ## Ping
 @adminPlugin.command
