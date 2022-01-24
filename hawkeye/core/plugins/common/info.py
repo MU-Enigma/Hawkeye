@@ -1,11 +1,36 @@
 import hikari
 import lightbulb
+from lightbulb import commands, context
 from datetime import datetime
+from random import randint
 
-testPlugin = lightbulb.Plugin("test")
+infoPlugin = lightbulb.Plugin("info")
+
+## Returns avatar of user
+@infoPlugin.command
+@lightbulb.option("target", description = "User to fetch avatar of", type = hikari.User, required = False)
+@lightbulb.command("avatar", description = "Fetch Avatar of yourself or the specified user.", aliases = ['av', 'pfp'], auto_defer = True)
+@lightbulb.implements(commands.PrefixCommand, commands.SlashCommand)
+async def avatar_cmd(ctx: context.Context) -> None:
+    target = ctx.options.target if ctx.options.target is not None else ctx.author
+
+    embed = hikari.Embed(
+		title = f"Avatar of {target.username}",
+		color = randint(0, 0x3B9DFF)
+	).set_image(
+		target.avatar_url
+	).set_footer(
+		text = f"Requested by {ctx.author.username}",
+		icon = ctx.author.avatar_url
+	).set_author(
+		name = f"{ctx.app.get_me().username}",
+		icon = ctx.app.get_me().avatar_url
+	)
+
+    await ctx.respond(embed = embed, reply = True)
 
 ## Returns info about the user
-@testPlugin.command
+@infoPlugin.command
 @lightbulb.option("target", "The member to get information about.", hikari.User, required=False)
 @lightbulb.command("userinfo", "Get info on a server member.")
 @lightbulb.implements(lightbulb.PrefixCommand, lightbulb.SlashCommand)
@@ -57,6 +82,8 @@ async def userinfo(ctx: lightbulb.Context) -> None:
 
     await ctx.respond(embed)
 
-
 def load(bot: lightbulb.BotApp) -> None:
-    bot.add_plugin(testPlugin)
+    bot.add_plugin(infoPlugin)
+
+def unload(bot: lightbulb.BotApp) -> None:
+    bot.remove_plugin(infoPlugin)

@@ -1,4 +1,5 @@
 import asyncio
+from asyncio.subprocess import STDOUT
 import hikari 
 import lightbulb
 from hawkeye.core.utils.Activity import Activity
@@ -40,7 +41,6 @@ class Hawkeye(lightbulb.BotApp):
     async def on_started(self, _: hikari.StartedEvent) -> None:
         asyncio.create_task(Activity(self).change_status())
         print("Bot has started sucessfully.")
-
 
     async def on_stopping(self, _: hikari.StoppingEvent) -> None:
         print("Bot is stopping...")
