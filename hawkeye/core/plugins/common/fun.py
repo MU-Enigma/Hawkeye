@@ -15,8 +15,8 @@ funPlugin = lightbulb.Plugin("fun")
 @lightbulb.set_help("Give answers to your questions.")
 @lightbulb.option("question", "The question you want answers to.")
 @lightbulb.command("8ball", description="Make the game of the 8ball.")
-@lightbulb.implements(lightbulb.SlashCommand, lightbulb.PrefixCommand)
-async def cmd_ball(ctx: lightbulb.SlashContext):
+@lightbulb.implements(lightbulb.PrefixCommand)
+async def ball(ctx: lightbulb.Context):
     
     responses = [
     "It is certain.",
@@ -49,8 +49,8 @@ async def cmd_ball(ctx: lightbulb.SlashContext):
 @lightbulb.add_cooldown(length=3600, uses=1, bucket=lightbulb.UserBucket)
 @lightbulb.option("user", "User you want give the cookie", hikari.Member)
 @lightbulb.command(name="givecookie", aliases=("gcookie",), description="Give a cookie to a user.")
-@lightbulb.implements(lightbulb.SlashCommand, lightbulb.PrefixCommand)
-async def cmd_cookie(ctx: lightbulb.SlashContext) -> None:
+@lightbulb.implements(lightbulb.PrefixCommand)
+async def cookie(ctx: lightbulb.Context) -> None:
 
     target = ctx.options.user
 
@@ -122,8 +122,8 @@ async def action(ctx: lightbulb.Context, text, image) -> None:
 @lightbulb.set_help("Hug someone you mention.")
 @lightbulb.option("member", "The member chosen for action.", hikari.Member)
 @lightbulb.command("hug")
-@lightbulb.implements(lightbulb.PrefixCommand, lightbulb.SlashCommand)
-async def command_hug(ctx: lightbulb.context) -> None:
+@lightbulb.implements(lightbulb.PrefixCommand)
+async def hug(ctx: lightbulb.Context) -> None:
     target = ctx.options.member
     gif = get_gif("anime-hug")
 
@@ -134,8 +134,8 @@ async def command_hug(ctx: lightbulb.context) -> None:
 @lightbulb.set_help("Clap or clap for someone you mention.")
 @lightbulb.option("member", "The member chosen for action.", hikari.Member, required=False)
 @lightbulb.command("clap")
-@lightbulb.implements(lightbulb.PrefixCommand, lightbulb.SlashCommand)
-async def command_clap(ctx: lightbulb.context) -> None:
+@lightbulb.implements(lightbulb.PrefixCommand)
+async def clap(ctx: lightbulb.Context) -> None:
     
     target = ctx.options.member
 
@@ -152,8 +152,8 @@ async def command_clap(ctx: lightbulb.context) -> None:
 @lightbulb.set_help("Highfives someone you mention.")
 @lightbulb.option("member", "The member chosen for action.", hikari.Member)
 @lightbulb.command("highfive")
-@lightbulb.implements(lightbulb.PrefixCommand, lightbulb.SlashCommand)
-async def command_highfive(ctx: lightbulb.context) -> None:
+@lightbulb.implements(lightbulb.PrefixCommand)
+async def command_highfive(ctx: lightbulb.Context) -> None:
     
     target = ctx.options.member
 
@@ -165,8 +165,8 @@ async def command_highfive(ctx: lightbulb.context) -> None:
 @lightbulb.set_help("Laugh yourself or at someone you mention.")
 @lightbulb.option("member", "The member chosen for action.", hikari.Member, required=False)
 @lightbulb.command("laugh")
-@lightbulb.implements(lightbulb.PrefixCommand, lightbulb.SlashCommand)
-async def command_laugh(ctx: lightbulb.context) -> None:
+@lightbulb.implements(lightbulb.PrefixCommand)
+async def command_laugh(ctx: lightbulb.Context) -> None:
     
     target = ctx.options.member
 
@@ -182,8 +182,8 @@ async def command_laugh(ctx: lightbulb.context) -> None:
 @lightbulb.set_help("Kiss the person you mention.")
 @lightbulb.option("member", "The member chosen for action.", hikari.Member)
 @lightbulb.command("kiss", "Kiss someone.")
-@lightbulb.implements(lightbulb.PrefixCommand, lightbulb.SlashCommand)
-async def command_kiss(ctx: lightbulb.context) -> None:
+@lightbulb.implements(lightbulb.PrefixCommand)
+async def command_kiss(ctx: lightbulb.Context) -> None:
     target = ctx.options.member
     if target.id == ctx.member.id:
         await ctx.respond(f"I don't think you can kiss yourself {ctx.member.mention}")
@@ -197,8 +197,8 @@ async def command_kiss(ctx: lightbulb.context) -> None:
 @lightbulb.set_help("Hitting the programmer grind, alone or with someone mentioned.")
 @lightbulb.option("member", "The member chosen for action.", hikari.Member, required=False)
 @lightbulb.command("grind")
-@lightbulb.implements(lightbulb.PrefixCommand, lightbulb.SlashCommand)
-async def command_program(ctx: lightbulb.context) -> None:
+@lightbulb.implements(lightbulb.PrefixCommand)
+async def command_program(ctx: lightbulb.Context) -> None:
     target = ctx.options.member
     gif = get_gif("anime-programmer", limit=3)
 
@@ -212,8 +212,8 @@ async def command_program(ctx: lightbulb.context) -> None:
 @funPlugin.command
 @lightbulb.option('fahrenheit', 'Temperature in Fahrenheit to convert.', required=True, type=float)
 @lightbulb.command('celsius', 'Convert Fahrenheit to Celsius.')
-@lightbulb.implements(lightbulb.commands.SlashCommand)
-async def celsius_command(ctx: lightbulb.context.Context) -> None:
+@lightbulb.implements(lightbulb.PrefixCommand)
+async def celsius_command(ctx: lightbulb.Context) -> None:
     await ctx.respond(
         embed=hikari.Embed(
             title='Fahrenheit to Celsius',
@@ -225,8 +225,8 @@ async def celsius_command(ctx: lightbulb.context.Context) -> None:
 @funPlugin.command
 @lightbulb.option('celsius', 'Temperature in Celsius to convert.', required=True, type=float)
 @lightbulb.command('fahrenheit', 'Convert Celsius to Fahrenheit.')
-@lightbulb.implements(lightbulb.commands.SlashCommand)
-async def fahrenheit_command(ctx: lightbulb.context.Context) -> None:
+@lightbulb.implements(lightbulb.PrefixCommand)
+async def fahrenheit_command(ctx: lightbulb.Context) -> None:
     await ctx.respond(
         embed=hikari.Embed(
             title='Celsius to Fahrenheit',
@@ -241,8 +241,8 @@ async def fahrenheit_command(ctx: lightbulb.context.Context) -> None:
 @lightbulb.option("sides", "The number of sides each die will have.", int, default=6)
 @lightbulb.option("number", "The number of dice to roll.", int)
 @lightbulb.command("dice", "Roll one or more dice.")
-@lightbulb.implements(commands.SlashCommand)
-async def dice(ctx: lightbulb.context.Context) -> None:
+@lightbulb.implements(lightbulb.PrefixCommand)
+async def dice(ctx: lightbulb.Context) -> None:
     number = ctx.options.number
     sides = ctx.options.sides
     bonus = ctx.options.bonus
