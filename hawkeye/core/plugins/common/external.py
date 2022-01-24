@@ -21,7 +21,7 @@ async def src(ctx: lightbulb.Context) -> None:
 async def src(ctx: lightbulb.SlashContext) -> None:
     await ctx.respond(f"<https://github.com/MU-Enigma/Hawkeye>")
 
-##Enigma Github
+## Sends link to Enigma Github
 @externalPlugin.command
 @lightbulb.command("git", "Returns the Enigma Github")
 @lightbulb.implements(lightbulb.PrefixCommand, lightbulb.SlashCommand)
@@ -30,7 +30,7 @@ async def src(ctx: lightbulb.Context) -> None:
 async def src(ctx: lightbulb.SlashContext) -> None:
     await ctx.respond(f"<https://github.com/MU-Enigma/>")
 
-##Enigma website
+## Sends link to Enigma website
 @externalPlugin.command
 @lightbulb.command("website", "Returns the Enigma website")
 @lightbulb.implements(lightbulb.PrefixCommand, lightbulb.SlashCommand)
@@ -39,7 +39,7 @@ async def src(ctx: lightbulb.Context) -> None:
 async def src(ctx: lightbulb.SlashContext) -> None:
     await ctx.respond(f"<https://mu-enigma.github.io/>")
 
-##Google search
+## Google search
 @externalPlugin.command
 @lightbulb.option("query", "The thing to search.")
 @lightbulb.command("google", "Let me Google that for you...")
@@ -62,7 +62,7 @@ async def google(ctx: lightbulb.SlashContext) -> None:
 
     await ctx.respond(f"<https://letmegooglethat.com/?q={q.replace(' ', '+')}>")
 
-##DuckDuckGo search
+## DuckDuckGo search
 @externalPlugin.command
 @lightbulb.option("query", "The thing to search.")
 @lightbulb.command("duckduckgo", "Let me Duck Duck Go that for you...")
@@ -126,6 +126,29 @@ async def command_wikipedia(ctx: lightbulb.SlashContext) -> None:
 
     except(wikipedia.exceptions.HTTPTimeoutError):
         await message.edit(content="The servers seem to be down. Please try again later.")
+
+## Reddit search
+@externalPlugin.command
+@lightbulb.option("query", "The thing to search.")
+@lightbulb.command("reddit", "Searching on Reddit.")
+@lightbulb.implements(lightbulb.PrefixCommand, lightbulb.SlashCommand)
+async def reddit(ctx: lightbulb.Context) -> None:
+    q = ctx.options.query
+
+    if len(q) > 50:
+        await ctx.respond("Your query should be no longer than 50 characters.")
+        return
+
+    await ctx.respond(f"<https://www.reddit.com/search.json?q={q.replace(' ', '+')}>")
+
+async def duckduckgo(ctx: lightbulb.SlashContext) -> None:
+    q = ctx.options.query
+
+    if len(q) > 50:
+        await ctx.respond("Your query should be no longer than 50 characters.")
+        return
+
+    await ctx.respond(f"<https://www.reddit.com/search.json?q={q.replace(' ', '+')}>")
 
 def load(bot: lightbulb.BotApp) -> None:
     bot.add_plugin(externalPlugin)
