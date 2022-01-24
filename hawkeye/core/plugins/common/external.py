@@ -87,8 +87,8 @@ async def duckduckgo(ctx: lightbulb.SlashContext) -> None:
 
 ## Wikipedia search
 @externalPlugin.command()
-@lightbulb.set_help("Search wikipedia and receive in an embed")
-@lightbulb.option("search", "Key word of the search you want")
+@lightbulb.set_help("Search wikipedia.")
+@lightbulb.option("query", "The thing to search.")
 @lightbulb.command(name="wikipedia", aliases=("wiki","wk"), description="Search a target in wikipedia.")
 @lightbulb.implements(lightbulb.SlashCommand)
 async def command_wikipedia(ctx: lightbulb.SlashContext) -> None:

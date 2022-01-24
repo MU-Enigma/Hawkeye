@@ -11,14 +11,6 @@ adminPlugin.add_checks(
     lightbulb.has_guild_permissions(hikari.Permissions.ADMINISTRATOR)
 )
 
-## Extension reload
-@adminPlugin.command
-@lightbulb.command("reload", "Reloads the bot extension")
-async def reload(self, ctx: lightbulb.Context, extensions: str) -> None:
-    for ext in extensions.split(" "):
-        ctx.bot.reload_extensions(ext)
-        logging.info(f"{ext} extension reloaded")
-
 ## Ping
 @adminPlugin.command
 @lightbulb.command("ping", "Shares bot latency.")

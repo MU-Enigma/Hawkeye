@@ -119,21 +119,21 @@ async def action(ctx: lightbulb.Context, text, image) -> None:
 
 ## Hugs person mentioned
 @funPlugin.command
-@lightbulb.set_help("Give a hug to whoever mentions.")
-@lightbulb.option("member", "The member you choice for make the action.", hikari.Member)
-@lightbulb.command("hug", "Just hug someone.")
+@lightbulb.set_help("Hug someone you mention.")
+@lightbulb.option("member", "The member chosen for action.", hikari.Member)
+@lightbulb.command("hug")
 @lightbulb.implements(lightbulb.PrefixCommand, lightbulb.SlashCommand)
 async def command_hug(ctx: lightbulb.context) -> None:
     target = ctx.options.member
     gif = get_gif("anime-hug")
 
-    await action(ctx, f"**{ctx.member.username}** hug to **{target.username}**", gif)
+    await action(ctx, f"**{ctx.member.username}** hugs **{target.username}**", gif)
 
 ## Claps for person mentioned
 @funPlugin.command
-@lightbulb.set_help("Clap or clap for someone.")
-@lightbulb.option("member", "The member you choice for make the action.", hikari.Member, required=False)
-@lightbulb.command("clap", "Just clap or clap for someone.")
+@lightbulb.set_help("Clap or clap for someone you mention.")
+@lightbulb.option("member", "The member chosen for action.", hikari.Member, required=False)
+@lightbulb.command("clap")
 @lightbulb.implements(lightbulb.PrefixCommand, lightbulb.SlashCommand)
 async def command_clap(ctx: lightbulb.context) -> None:
     
@@ -149,22 +149,22 @@ async def command_clap(ctx: lightbulb.context) -> None:
 
 ## High fives person mentioned
 @funPlugin.command
-@lightbulb.set_help("Highfive to the person who mentions.")
-@lightbulb.option("member", "The member you choice for make the action.", hikari.Member)
-@lightbulb.command("highfive", "Highfive to someone :)")
+@lightbulb.set_help("Highfives someone you mention.")
+@lightbulb.option("member", "The member chosen for action.", hikari.Member)
+@lightbulb.command("highfive")
 @lightbulb.implements(lightbulb.PrefixCommand, lightbulb.SlashCommand)
 async def command_highfive(ctx: lightbulb.context) -> None:
     
     target = ctx.options.member
 
     gif = get_gif("anime-highfive")
-    await action(ctx, f"**{ctx.member.username}** highfive to **{target.username}**", gif)
+    await action(ctx, f"**{ctx.member.username}** highfives **{target.username}**", gif)
 
 ## Laugh at someone mentioned
 @funPlugin.command
-@lightbulb.set_help("Laugh or tease someone you mention")
-@lightbulb.option("member", "The member you choice for make the action.", hikari.Member, required=False)
-@lightbulb.command("laugh", "Laugh or tease.")
+@lightbulb.set_help("Laugh yourself or at someone you mention.")
+@lightbulb.option("member", "The member chosen for action.", hikari.Member, required=False)
+@lightbulb.command("laugh")
 @lightbulb.implements(lightbulb.PrefixCommand, lightbulb.SlashCommand)
 async def command_laugh(ctx: lightbulb.context) -> None:
     
@@ -179,8 +179,8 @@ async def command_laugh(ctx: lightbulb.context) -> None:
 
 ## Kiss the person mentioned
 @funPlugin.command
-@lightbulb.set_help("Kiss the person who mentions.")
-@lightbulb.option("member", "The member you choice for make the action.", hikari.Member)
+@lightbulb.set_help("Kiss the person you mention.")
+@lightbulb.option("member", "The member chosen for action.", hikari.Member)
 @lightbulb.command("kiss", "Kiss someone.")
 @lightbulb.implements(lightbulb.PrefixCommand, lightbulb.SlashCommand)
 async def command_kiss(ctx: lightbulb.context) -> None:
@@ -190,20 +190,20 @@ async def command_kiss(ctx: lightbulb.context) -> None:
         return
 
     gif = get_gif("anime-kiss")
-    await action(ctx, f"**{ctx.member.username}** le dio un beso a **{target.username}**. (づ￣ ³￣)づ", gif)
+    await action(ctx, f"**{ctx.member.username}** kisses **{target.username}**.", gif)
 
 ## Code grind
 @funPlugin.command
-@lightbulb.set_help("Show you are changing the world whit code.")
-@lightbulb.option("member", "The member you choice for make the action.", hikari.Member, required=False)
-@lightbulb.command("grind", "Programming alone or with someone.")
+@lightbulb.set_help("Hitting the programmer grind, alone or with someone mentioned.")
+@lightbulb.option("member", "The member chosen for action.", hikari.Member, required=False)
+@lightbulb.command("grind")
 @lightbulb.implements(lightbulb.PrefixCommand, lightbulb.SlashCommand)
 async def command_program(ctx: lightbulb.context) -> None:
     target = ctx.options.member
     gif = get_gif("anime-programmer", limit=3)
 
     if target == None:
-        await action(ctx, f"**{ctx.member.username}** is programming something amazing.", gif)
+        await action(ctx, f"**{ctx.member.username}** is hitting the programmer grind.", gif)
 
     else:
         await action(ctx, f"**{ctx.member.username}** is programming something amazing with **{target.username}**", gif)
@@ -261,3 +261,9 @@ async def dice(ctx: lightbulb.context.Context) -> None:
         + (f" + {bonus} (bonus)" if bonus else "")
         + f" = **{sum(rolls) + bonus:,}**"
     )
+
+def load(bot: lightbulb.BotApp) -> None:
+    bot.add_plugin(funPlugin)
+
+def unload(bot: lightbulb.BotApp) -> None:
+    bot.remove_plugin(funPlugin)

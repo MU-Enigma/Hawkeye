@@ -1,7 +1,6 @@
 from typing import Tuple
 import hikari
 import lightbulb
-import random
 import re
 import datetime
 
@@ -47,7 +46,7 @@ async def mute(ctx : context.Context) -> None:
 		raise ("Invalid string format. Time must be in the form <number>[s|m|h|d|w].")
 	
 	if not 1 <= time_s <= 2_419_200:
-		await ctx.respond("The timeout must be between 1 second and 28 days inclusive.")
+		await ctx.respond("Mute duration must be between 1 second and 28 days.")
 		return
 
 	await target.edit(
